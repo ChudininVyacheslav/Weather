@@ -7,9 +7,8 @@ import Info from './components/Info/Info';
 import { Context } from './context';
 
 function App() {
-
   const [stateWeather, setStateWeather] = useState(background);
-
+  
   return (
     <Context.Provider value={{ stateWeather, setStateWeather }}>
       <div style={{ backgroundImage: `url(${stateWeather})` }} className='app'>

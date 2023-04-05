@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from './Info-Form/Form';
+import Form from './Form/Form';
 import styles from './Info.module.scss';
 
 const Info = () => {

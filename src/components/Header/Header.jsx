@@ -7,6 +7,6 @@ const Header = () => {
             <h1 className={styles.title}>Прогноз погоды</h1>
         </div>
     )
-}
+};
 
 export default Header

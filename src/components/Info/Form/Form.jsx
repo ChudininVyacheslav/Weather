@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { requestWeather, requestThreeHours } from './weatherAPI';
+import { requestWeather, requestThreeHours } from '../../../api/weatherAPI';
 import styles from './Form.module.scss';
 import clear from '../../../assets/clear.png';
 import clouds from '../../../assets/cloudy.png';
@@ -14,7 +14,8 @@ import foggyBackground from '../../../assets/foggy-background.jpg';
 import rainBackground from '../../../assets/rain-background.jpg';
 import snowyBackground from '../../../assets/snowy-background.jpg';
 import thunderstormBackground from '../../../assets/thunderstorm-background.jpg';
-    
+import { processingWeather,processingWeatherThreeHours } from './processingApi';
+
 const apiKey = '5ee14456817b86276d301402ebe9f898';
 const weather = {
     Clouds: clouds,
@@ -24,7 +25,6 @@ const weather = {
     Haze: haze,
     Thunderstorm: thunderstorm
 };
-
 const weatherBackground = {
     Clouds: cloudsBackground,
     Snow: snowyBackground,
@@ -33,6 +33,7 @@ const weatherBackground = {
     Haze: foggyBackground,
     Thunderstorm: thunderstormBackground
 };
+const defaultValue = 'Москва';
 
 const Form = () => {
     const [value, setValue] = useState('');
@@ -41,29 +42,39 @@ const Form = () => {
     const { stateWeather, setStateWeather } = useContext(Context);
 
     useEffect(() => {
-        getData('Москва', apiKey);
-        getDataThreeHours('Москва', apiKey);
+        getData(defaultValue, apiKey);
+        getDataThreeHours(defaultValue, apiKey);
     }, []);
 
     async function getData(valueInput, key) {
-        const queryResult = await requestWeather(valueInput, key);
-        if (!queryResult) {
-            return;
-        };
-
-        setStateWeather(weatherBackground[queryResult.weather]);
-
-        setWeatherCity(queryResult);
+        try {
+            if (!valueInput) {
+                alert('Введите корректное название города!')
+                return false;
+            };
+            const queryResult = await requestWeather(valueInput, key);
+            if (!queryResult) {
+                return;
+            };
+            const data = processingWeather(queryResult);
+            setStateWeather(weatherBackground[data.weather]);
+            setWeatherCity(data);
+        } catch (e) {
+            console.log(e.massege);
+        }
     };
 
     async function getDataThreeHours(valueInput, apiKey) {
         try {
+            if (!valueInput) {
+                return false;
+            };
             const queryResult = await requestThreeHours(valueInput, apiKey);
             if (!queryResult) {
                 return;
             };
-
-            setWeatherThreeHours(queryResult);
+            const changesData = processingWeatherThreeHours(queryResult);
+            setWeatherThreeHours(changesData);
         } catch (e) {
             console.log(e.massege);
         }
