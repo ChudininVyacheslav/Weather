@@ -1,21 +1,23 @@
+import React, { useState } from 'react';
 import './reset.css';
 import './App.css';
+import background from './assets/background.jpg';
 import Header from './components/Header/Header';
 import Info from './components/Info/Info';
-const divNode = document.getElementById('app');
+import { Context } from './context';
 
 function App() {
 
+  const [stateWeather, setStateWeather] = useState(background);
+
   return (
-    <div id='app' className="app">
-      <Header />
-      <Info />
-    </div>
+    <Context.Provider value={{ stateWeather, setStateWeather }}>
+      <div style={{ backgroundImage: `url(${stateWeather})` }} className='app'>
+        <Header />
+        <Info />
+      </div>
+    </Context.Provider>
   );
-}
+};
 
 export default App;
-
-
-
-// document.getElementById('a').style.backgroundImage="url(images/img.jpg)";  изменить background-image

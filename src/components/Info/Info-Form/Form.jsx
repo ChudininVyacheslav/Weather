@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { requestWeather, requestThreeHours } from './weatherAPI';
 import styles from './Form.module.scss';
 import clear from '../../../assets/clear.png';
@@ -7,7 +7,14 @@ import haze from '../../../assets/foggy.png';
 import rain from '../../../assets/rain.png';
 import snow from '../../../assets/snowy.png';
 import thunderstorm from '../../../assets/thunderstorm.png';
-
+import { Context } from '../../../context';
+import clearBackground from '../../../assets/clear-background.jpg';
+import cloudsBackground from '../../../assets/cloudy-background.jpg';
+import foggyBackground from '../../../assets/foggy-background.jpg';
+import rainBackground from '../../../assets/rain-background.jpg';
+import snowyBackground from '../../../assets/snowy-background.jpg';
+import thunderstormBackground from '../../../assets/thunderstorm-background.jpg';
+    
 const apiKey = '5ee14456817b86276d301402ebe9f898';
 const weather = {
     Clouds: clouds,
@@ -18,10 +25,20 @@ const weather = {
     Thunderstorm: thunderstorm
 };
 
+const weatherBackground = {
+    Clouds: cloudsBackground,
+    Snow: snowyBackground,
+    Clear: clearBackground,
+    Rain: rainBackground,
+    Haze: foggyBackground,
+    Thunderstorm: thunderstormBackground
+};
+
 const Form = () => {
     const [value, setValue] = useState('');
     const [weatherCity, setWeatherCity] = useState({});
     const [weatherThreeHours, setWeatherThreeHours] = useState([]);
+    const { stateWeather, setStateWeather } = useContext(Context);
 
     useEffect(() => {
         getData('Москва', apiKey);
@@ -33,6 +50,8 @@ const Form = () => {
         if (!queryResult) {
             return;
         };
+
+        setStateWeather(weatherBackground[queryResult.weather]);
 
         setWeatherCity(queryResult);
     };

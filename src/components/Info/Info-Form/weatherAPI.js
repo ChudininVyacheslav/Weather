@@ -1,5 +1,3 @@
-
-
 export async function requestWeather(valueInput, key) {
     try {
         if (!valueInput) {
@@ -15,7 +13,6 @@ export async function requestWeather(valueInput, key) {
             temp: Math.round(getRequest.main.temp),
             weather: getRequest.weather[0].main
         };
-
         return data;
     } catch (e) {
         console.log(e.massege)
@@ -27,17 +24,14 @@ export async function requestThreeHours(valueInput, apiKey) {
         if (!valueInput) {
             return false;
         };
-
         const data2 = [];
         const value = valueInput || 'Moscow';
         const request = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${value}&cnt=8&appid=${apiKey}&units=metric`);
         const getRequest = await request.json();
-        // console.log(getRequest)
         if (getRequest.cod === '404') {
             alert('Введите корректное название города!')
             return;
         };        
-
         const data = getRequest.list;
         data.map((elem) => {
             return data2.push({
@@ -58,11 +52,10 @@ export async function requestThreeHours(valueInput, apiKey) {
             if (elem.time.length === 4) {
                 elem.time = '0' + elem.time;
             }
-            return elem
+            return elem;
         });
         return data2;
     } catch (e) {
         console.log(e.massege);
     }
 };
-
