@@ -2,11 +2,12 @@ import './reset.css';
 import './App.css';
 import Header from './components/Header/Header';
 import Info from './components/Info/Info';
-
+const divNode = document.getElementById('app');
 
 function App() {
+
   return (
-    <div className="App">
+    <div id='app' className="app">
       <Header />
       <Info />
     </div>
@@ -14,3 +15,7 @@ function App() {
 }
 
 export default App;
+
+
+
+// document.getElementById('a').style.backgroundImage="url(images/img.jpg)";  изменить background-image
